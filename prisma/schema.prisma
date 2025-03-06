@@ -21,7 +21,7 @@ model Usuario {
   criadoEm       DateTime  @default(now())
   atualizadoEm   DateTime  @updatedAt()
   produtos       Produto[]
-  movimentacoes Movimentacoes[]  
+  movimentacoes  Movimentacoes[]  
 }
 
 model Produto {
