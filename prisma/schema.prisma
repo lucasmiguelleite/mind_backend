@@ -13,13 +13,43 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model produto {
-  id             Int       @id @default(autoincrement())
+model Usuario {
+  id             Int       @default(autoincrement()) @id
+  nome           String 
+  email          String    @unique
+  senha          String
+  criadoEm       DateTime  @default(now())
+  atualizadoEm   DateTime  @updatedAt()
+  produtos       Produto[]
+  movimentacoes Movimentacoes[]  
+}
+
+model Produto {
+  id             Int       @default(autoincrement()) @id
   nome           String 
   descricao      String
   valor          Float
   estoque        Int
   imagem         String 
   criadoEm       DateTime  @default(now())
-  AtualizadoEm   DateTime  @updatedAt()
+  atualizadoEm   DateTime  @updatedAt()
+  usuario        Usuario   @relation(fields: [usuarioId], references: [id])
+  usuarioId      Int       @unique
+  movimentacoes  Movimentacoes[]
+}
+
+model Movimentacoes {
+  id             Int        @default(autoincrement()) @id
+  usuario        Usuario    @relation(fields: [usuarioId], references: [id])
+  usuarioId      Int
+  produto        Produto    @relation(fields: [produtoId], references: [id])
+  produtoId      Int
+  tipo           Tipo
+  quantidade     Int
+  data           DateTime   @default(now())
+}
+
+enum Tipo {
+  Entrada
+  Saída
 }
