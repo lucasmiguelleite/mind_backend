@@ -1,4 +1,4 @@
-import { IsEmail, IsString, Matches, MaxLength, MinLength } from "class-validator";
+import { IsDate, IsEmail, IsString, Matches, MaxLength, MinLength } from "class-validator";
 
 export class CreateUsuarioDto {
   @IsEmail()
@@ -22,4 +22,6 @@ export class CreateUsuarioDto {
     message: 'Nome precisa ser uma string',
   })
   nome: string;
+
+
 }

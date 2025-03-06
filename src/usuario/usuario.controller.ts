@@ -6,12 +6,12 @@ import { UsuarioService } from './usuario.service';
 export class UsuarioController {
   constructor(private readonly usuarioService: UsuarioService) { }
 
-  @Post()
+  @Post("/cadastro")
   create(@Body() createUsuarioDto: CreateUsuarioDto) {
-    return this.usuarioService.create(createUsuarioDto);
+    return this.usuarioService.criar(createUsuarioDto);
   }
 
-  @Get(':id')
+  @Get('/login')
   findOne(@Param('id') id: string) {
     return this.usuarioService.findOne(+id);
   }
