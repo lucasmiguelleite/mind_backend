@@ -1,7 +1,7 @@
 import { IsNotEmpty } from "class-validator";
 
 export class CreateProdutoDto {
- @IsNotEmpty()
+  @IsNotEmpty()
   nome: string;
 
   @IsNotEmpty()
@@ -14,5 +14,5 @@ export class CreateProdutoDto {
   estoque: number;
 
   @IsNotEmpty()
-  imagem: string; 
+  imagem: string;
 }
