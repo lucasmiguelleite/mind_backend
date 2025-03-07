@@ -1,7 +1,6 @@
 import { ConflictException, Injectable } from '@nestjs/common';
-import { CreateUsuarioDto } from './dto/create-usuario.dto';
-import { PrismaService } from 'src/prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
+import { CreateUsuarioDto } from './dto/create-usuario.dto';
 import { UsuarioRepository } from "./usuario.repository";
 
 @Injectable()
@@ -22,12 +21,4 @@ export class UsuarioService {
       senha: senha,
     });
   }
-
-  findOne(id: number) {
-    return `This action returns a #${id} usuario`;
-  }
-
-  // update(id: number, updateUsuarioDto: UpdateUsuarioDto) {
-  //   return `This action updates a #${id} usuario`;
-  // }
 }
