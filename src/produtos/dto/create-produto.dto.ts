@@ -1,18 +1,31 @@
 import { IsNotEmpty } from "class-validator";
 
 export class CreateProdutoDto {
-  @IsNotEmpty()
+  @IsNotEmpty({
+    message: "Nome não informado"
+  })
   nome: string;
 
-  @IsNotEmpty()
+  @IsNotEmpty({
+    message: "Descrição não informada"
+  })
   descricao: string;
 
-  @IsNotEmpty()
+  @IsNotEmpty({
+    message: "Valor não informado"
+  })
   valor: number;
 
-  @IsNotEmpty()
+  @IsNotEmpty({
+    message: "Estoque não informado"
+  })
   estoque: number;
 
-  @IsNotEmpty()
+  @IsNotEmpty({
+    message: "Imagem não fornecida"
+  })
   imagem: string;
+
+  @IsNotEmpty()
+  userId: number;
 }

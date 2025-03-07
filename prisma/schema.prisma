@@ -33,17 +33,17 @@ model Produto {
   imagem        String
   criadoEm      DateTime        @default(now())
   atualizadoEm  DateTime        @updatedAt()
-  usuario       Usuario         @relation(fields: [usuarioId], references: [id])
   usuarioId     Int             @unique
+  usuario       Usuario         @relation(fields: [usuarioId], references: [id])
   movimentacoes Movimentacoes[]
 }
 
 model Movimentacoes {
   id         Int      @id @default(autoincrement())
-  usuario    Usuario  @relation(fields: [usuarioId], references: [id])
   usuarioId  Int
-  produto    Produto  @relation(fields: [produtoId], references: [id])
+  usuario    Usuario  @relation(fields: [usuarioId], references: [id])
   produtoId  Int
+  produto    Produto  @relation(fields: [produtoId], references: [id])
   tipo       Tipo
   quantidade Int
   data       DateTime @default(now())

@@ -5,7 +5,7 @@ import { UpdateProdutoDto } from './dto/update-produto.dto';
 
 @Controller('produtos')
 export class ProdutosController {
-  constructor(private readonly produtosService: ProdutosService) {}
+  constructor(private produtosService: ProdutosService) { }
 
   @Post()
   create(@Body() createProdutoDto: CreateProdutoDto) {
