@@ -33,7 +33,7 @@ model Produto {
   imagem        String
   criadoEm      DateTime        @default(now())
   atualizadoEm  DateTime        @updatedAt()
-  usuarioId     Int             @unique
+  usuarioId     Int
   usuario       Usuario         @relation(fields: [usuarioId], references: [id])
   movimentacoes Movimentacoes[]
 }
