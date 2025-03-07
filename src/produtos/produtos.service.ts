@@ -1,13 +1,29 @@
-import { Injectable } from '@nestjs/common';
+import { HttpCode, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateProdutoDto } from './dto/create-produto.dto';
 import { UpdateProdutoDto } from './dto/update-produto.dto';
 import { ProdutosRepository } from './produtos.repository';
+import { CreateMovimentacaoDto } from './dto/create-movimentacao';
 
 @Injectable()
 export class ProdutosService {
   constructor(private produtosRepository: ProdutosRepository) { }
   async create(createProdutoDto: CreateProdutoDto) {
-    return await this.produtosRepository.create(createProdutoDto);
+    try {
+      const produto = await this.produtosRepository.create(createProdutoDto);
+      if (!produto || !produto.id || !produto.usuarioId) {
+        throw new Error("Erro ao criar o movimentação");
+      }
+      const createMovimentacaoDto: CreateMovimentacaoDto = {
+        usuarioId: produto.usuarioId,
+        produtoId: produto.id,
+        tipo: 'Entrada',
+        quantidade: createProdutoDto.estoque,
+      }
+      await this.produtosRepository.criaMovimentacao(createMovimentacaoDto);
+      return produto;
+    } catch (error) {
+      throw new Error(error);
+    }
   }
 
   findAll() {

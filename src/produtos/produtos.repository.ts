@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateProdutoDto } from './dto/create-produto.dto';
 import { Produto } from '@prisma/client';
+import { CreateMovimentacaoDto } from './dto/create-movimentacao';
 
 @Injectable()
 export class ProdutosRepository {
@@ -24,5 +25,17 @@ export class ProdutosRepository {
 
   async findAll(): Promise<Produto[]> {
     return this.prisma.produto.findMany();
+  }
+
+  async criaMovimentacao(movimentacao: CreateMovimentacaoDto) {
+    return await this.prisma.movimentacoes.create({
+      data: {
+        usuarioId: movimentacao.usuarioId,
+        produtoId: movimentacao.produtoId,
+        tipo: movimentacao.tipo,
+        quantidade: movimentacao.quantidade,
+        data: new Date(),
+      },
+    });
   }
 }
