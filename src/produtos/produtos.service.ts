@@ -10,14 +10,14 @@ export class ProdutosService {
   async create(createProdutoDto: CreateProdutoDto) {
     try {
       const produto = await this.produtosRepository.create(createProdutoDto);
-      if (!produto || !produto.id || !produto.usuarioId) {
+      if (!produto || !produto.id || !produto.usuarioId || !produto.estoque) {
         throw new Error("Erro ao criar o movimentação");
       }
       const createMovimentacaoDto: CreateMovimentacaoDto = {
         usuarioId: produto.usuarioId,
         produtoId: produto.id,
         tipo: 'Entrada',
-        quantidade: createProdutoDto.estoque,
+        quantidade: produto.estoque,
       }
       await this.produtosRepository.criaMovimentacao(createMovimentacaoDto);
       return produto;
@@ -26,16 +26,22 @@ export class ProdutosService {
     }
   }
 
-  findAll() {
-    return `This action returns all produtos`;
+  async findAllProduto(userId: number) {
+    if (!userId) {
+      throw new Error("Usuario não informado");
+    }
+    return this.produtosRepository.findAllProduto(userId);
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} produto`;
+  async findOneProduto(produtoId: number) {
+    return this.produtosRepository.findOneProduto(produtoId);
   }
 
-  update(id: number, updateProdutoDto: UpdateProdutoDto) {
-    return `This action updates a #${id} produto`;
+  async atualizarProduto(updateProdutoDto: UpdateProdutoDto) {
+    if (!updateProdutoDto) {
+      throw new Error("Dados não informados");
+    }
+    return this.produtosRepository.editarProduto(updateProdutoDto);
   }
 
   remove(id: number) {

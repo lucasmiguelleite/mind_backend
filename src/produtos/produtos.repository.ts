@@ -3,6 +3,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateProdutoDto } from './dto/create-produto.dto';
 import { Produto } from '@prisma/client';
 import { CreateMovimentacaoDto } from './dto/create-movimentacao';
+import { UpdateProdutoDto } from './dto/update-produto.dto';
 
 @Injectable()
 export class ProdutosRepository {
@@ -23,8 +24,35 @@ export class ProdutosRepository {
     });
   }
 
-  async findAll(): Promise<Produto[]> {
-    return this.prisma.produto.findMany();
+  async findAllProduto(userId: number): Promise<Produto[]> {
+    return await this.prisma.produto.findMany({
+      where: {
+        usuarioId: userId,
+      },
+    });
+  }
+
+  async findOneProduto(produtoId: number): Promise<Produto | null> {
+    return await this.prisma.produto.findUnique({
+      where: {
+        id: produtoId,
+      },
+    });
+  }
+
+  async editarProduto(produto: UpdateProdutoDto): Promise<Produto> {
+    if (!produto) {
+      throw new Error('Não foi possível editar o produto.');
+    }
+    return await this.prisma.produto.update({
+      where: {
+        id: produto.id,
+      },
+      data: {
+        ...produto,
+        atualizadoEm: new Date(),
+      },
+    });
   }
 
   async criaMovimentacao(movimentacao: CreateMovimentacaoDto) {

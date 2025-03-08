@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Request } from '@nestjs/common';
 import { ProdutosService } from './produtos.service';
 import { CreateProdutoDto } from './dto/create-produto.dto';
 import { UpdateProdutoDto } from './dto/update-produto.dto';
@@ -8,23 +8,23 @@ export class ProdutosController {
   constructor(private produtosService: ProdutosService) { }
 
   @Post()
-  create(@Body() createProdutoDto: CreateProdutoDto) {
-    return this.produtosService.create(createProdutoDto);
+  async create(@Body() createProdutoDto: CreateProdutoDto) {
+    return await this.produtosService.create(createProdutoDto);
   }
 
   @Get()
-  findAll() {
-    return this.produtosService.findAll();
+  async findAllProduto(@Request() req) {
+    return await this.produtosService.findAllProduto(req.user.sub);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.produtosService.findOne(+id);
+  @Get(':produtoId')
+  async findOneProduto(@Param('produtoId') produtoId: number) {
+    return await this.produtosService.findOneProduto(produtoId);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateProdutoDto: UpdateProdutoDto) {
-    return this.produtosService.update(+id, updateProdutoDto);
+  @Patch()
+  async atualizarProduto(@Body() updateProdutoDto: UpdateProdutoDto) {
+    return await this.produtosService.atualizarProduto(updateProdutoDto);
   }
 
   @Delete(':id')
