@@ -1,8 +1,8 @@
-import { HttpCode, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { CreateMovimentacaoDto } from './dto/create-movimentacao';
 import { CreateProdutoDto } from './dto/create-produto.dto';
 import { UpdateProdutoDto } from './dto/update-produto.dto';
 import { ProdutosRepository } from './produtos.repository';
-import { CreateMovimentacaoDto } from './dto/create-movimentacao';
 
 @Injectable()
 export class ProdutosService {
@@ -28,7 +28,7 @@ export class ProdutosService {
 
   async findAllProduto(userId: number) {
     if (!userId) {
-      throw new Error("Usuario não informado");
+      throw new HttpException("Usuario não informado", HttpStatus.BAD_REQUEST);
     }
     return this.produtosRepository.findAllProduto(userId);
   }
@@ -38,8 +38,8 @@ export class ProdutosService {
   }
 
   async atualizarProduto(updateProdutoDto: UpdateProdutoDto) {
-    if (!updateProdutoDto) {
-      throw new Error("Dados não informados");
+    if (!updateProdutoDto.nome && !updateProdutoDto.descricao && !updateProdutoDto.valor && !updateProdutoDto.estoque && !updateProdutoDto.imagem) {
+      throw new HttpException("Dados não informados", HttpStatus.UNPROCESSABLE_ENTITY);
     }
     return this.produtosRepository.editarProduto(updateProdutoDto);
   }
