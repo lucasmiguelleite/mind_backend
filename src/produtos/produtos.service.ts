@@ -38,9 +38,25 @@ export class ProdutosService {
   }
 
   async atualizarProduto(updateProdutoDto: UpdateProdutoDto) {
+    // verifica se todos os campos estão vazios
     if (!updateProdutoDto.nome && !updateProdutoDto.descricao && !updateProdutoDto.valor && !updateProdutoDto.estoque && !updateProdutoDto.imagem) {
       throw new HttpException("Dados não informados", HttpStatus.UNPROCESSABLE_ENTITY);
     }
+
+    // pega o valor antigo e compara com o novo para gerar a movimentação
+    const oldProduto = await this.findOneProduto(updateProdutoDto.id);
+
+    // cria a movimentação ao atualizar
+    if (oldProduto && oldProduto.estoque !== updateProdutoDto.estoque) {
+      const createMovimentacaoDto: CreateMovimentacaoDto = {
+        usuarioId: oldProduto.usuarioId,
+        produtoId: oldProduto.id,
+        tipo: updateProdutoDto.estoque > oldProduto.estoque ? 'Entrada' : 'Saída',
+        quantidade: Math.abs(updateProdutoDto.estoque - oldProduto.estoque),
+      }
+      await this.produtosRepository.criaMovimentacao(createMovimentacaoDto);
+    }
+
     return this.produtosRepository.editarProduto(updateProdutoDto);
   }
 
