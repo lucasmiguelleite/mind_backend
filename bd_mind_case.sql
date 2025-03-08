@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 08/03/2025 às 00:02
+-- Tempo de geração: 08/03/2025 às 12:49
 -- Versão do servidor: 10.4.32-MariaDB
 -- Versão do PHP: 8.2.12
 
@@ -30,10 +30,11 @@ SET time_zone = "+00:00";
 CREATE TABLE `movimentacoes` (
   `id` int(11) NOT NULL,
   `usuarioId` int(11) NOT NULL,
-  `produtoId` int(11) NOT NULL,
+  `produtoId` int(11) DEFAULT NULL,
+  `produtoExcluido` varchar(191) DEFAULT NULL,
   `tipo` enum('Entrada','Saída') NOT NULL,
   `quantidade` int(11) NOT NULL,
-  `data` datetime(3) NOT NULL DEFAULT current_timestamp(3)
+  `data` timestamp(3) NOT NULL DEFAULT current_timestamp(3)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -49,7 +50,7 @@ CREATE TABLE `produto` (
   `valor` double NOT NULL,
   `estoque` int(11) NOT NULL,
   `imagem` varchar(191) NOT NULL,
-  `criadoEm` datetime(3) NOT NULL DEFAULT current_timestamp(3),
+  `criadoEm` timestamp(3) NOT NULL DEFAULT current_timestamp(3),
   `atualizadoEm` datetime(3) NOT NULL,
   `usuarioId` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -91,7 +92,7 @@ CREATE TABLE `_prisma_migrations` (
 --
 
 INSERT INTO `_prisma_migrations` (`id`, `checksum`, `finished_at`, `migration_name`, `logs`, `rolled_back_at`, `started_at`, `applied_steps_count`) VALUES
-('9a6f047a-2b4d-43d0-8014-edad2d58abeb', '920327950fa544565c705f494faa1447e5e6024287312bce311dacc578cedf53', '2025-03-07 22:57:09.317', '20250307225709_init', NULL, NULL, '2025-03-07 22:57:09.154', 1);
+('482b2e30-63f3-4562-83df-6523e52e18bc', '38f475f6da4ca361690398898dd5eb5c09a62b8e78cdfb5cc857309af9286fa8', '2025-03-08 15:14:07.603', '20250308151407_init', NULL, NULL, '2025-03-08 15:14:07.454', 1);
 
 --
 -- Índices para tabelas despejadas
@@ -133,19 +134,19 @@ ALTER TABLE `_prisma_migrations`
 -- AUTO_INCREMENT de tabela `movimentacoes`
 --
 ALTER TABLE `movimentacoes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT de tabela `produto`
 --
 ALTER TABLE `produto`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de tabela `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Restrições para tabelas despejadas
@@ -155,7 +156,7 @@ ALTER TABLE `usuario`
 -- Restrições para tabelas `movimentacoes`
 --
 ALTER TABLE `movimentacoes`
-  ADD CONSTRAINT `Movimentacoes_produtoId_fkey` FOREIGN KEY (`produtoId`) REFERENCES `produto` (`id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `Movimentacoes_produtoId_fkey` FOREIGN KEY (`produtoId`) REFERENCES `produto` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
   ADD CONSTRAINT `Movimentacoes_usuarioId_fkey` FOREIGN KEY (`usuarioId`) REFERENCES `usuario` (`id`) ON UPDATE CASCADE;
 
 --
