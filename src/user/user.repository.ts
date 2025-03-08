@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { Usuario } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { setTime } from 'src/utils/setTime';
 
 @Injectable()
 export class UserRepository {
@@ -13,8 +14,8 @@ export class UserRepository {
         nome: user.name,
         email: user.email,
         senha: user.password,
-        criadoEm: new Date(),
-        atualizadoEm: new Date(),
+        criadoEm: setTime(),
+        atualizadoEm: setTime(),
       },
       omit: {
         senha: true,
