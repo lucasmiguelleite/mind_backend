@@ -22,13 +22,18 @@ export class ProdutosController {
     return await this.produtosService.findOneProduto(produtoId);
   }
 
+  @Get('/movimentacao')
+  async findAllMovimentacao(@Request() req) {
+    return await this.produtosService.findAllMovimentacao(req.user.sub);
+  }
+
   @Patch()
   async atualizarProduto(@Body() updateProdutoDto: UpdateProdutoDto) {
     return await this.produtosService.atualizarProduto(updateProdutoDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.produtosService.remove(+id);
+  async removerProduto(@Param('id') id: number) {
+    return this.produtosService.removerProduto(id);
   }
 }

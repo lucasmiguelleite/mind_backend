@@ -1,4 +1,4 @@
-import { IsNotEmpty } from "class-validator";
+import { IsNotEmpty, IsOptional } from "class-validator";
 
 export class CreateMovimentacaoDto {
   @IsNotEmpty()
@@ -8,8 +8,11 @@ export class CreateMovimentacaoDto {
   produtoId: number;
 
   @IsNotEmpty()
-  tipo: 'Entrada' | 'Saída'
+  tipo: 'Entrada' | 'Saída';
 
   @IsNotEmpty()
   quantidade: number;
+
+  @IsOptional()
+  produtoExcluido?: string;
 }

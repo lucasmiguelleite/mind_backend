@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from 'src/prisma/prisma.service';
-import { CreateProdutoDto } from './dto/create-produto.dto';
 import { Produto } from '@prisma/client';
+import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateMovimentacaoDto } from './dto/create-movimentacao';
+import { CreateProdutoDto } from './dto/create-produto.dto';
 import { UpdateProdutoDto } from './dto/update-produto.dto';
+import { setTime } from 'src/utils/setTime';
 
 @Injectable()
 export class ProdutosRepository {
@@ -18,8 +19,8 @@ export class ProdutosRepository {
         estoque: produtos.estoque,
         imagem: produtos.imagem,
         usuarioId: produtos.userId,
-        criadoEm: new Date(),
-        atualizadoEm: new Date(),
+        criadoEm: setTime(),
+        atualizadoEm: setTime(),
       },
     });
   }
@@ -40,19 +41,40 @@ export class ProdutosRepository {
     });
   }
 
+  async findAllMovimentacao(userId: number) {
+    return await this.prisma.movimentacoes.findMany({
+      where: {
+        usuarioId: userId,
+      },
+    });
+  }
+
+  async findAllMovimentacaoByProdutoId(produtoId: number) {
+    return await this.prisma.movimentacoes.findMany({
+      where: {
+        produtoId: produtoId,
+      },
+    });
+  }
+
   async editarProduto(produto: UpdateProdutoDto): Promise<Produto> {
-    if (!produto) {
-      throw new Error('Não foi possível editar o produto.');
-    }
     return await this.prisma.produto.update({
       where: {
         id: produto.id,
       },
       data: {
         ...produto,
-        atualizadoEm: new Date(),
+        atualizadoEm: setTime(),
       },
     });
+  }
+
+  async removerProduto(id: number) {
+    return await this.prisma.produto.delete({
+      where: {
+        id: id,
+      },
+    })
   }
 
   async criaMovimentacao(movimentacao: CreateMovimentacaoDto) {
@@ -62,7 +84,19 @@ export class ProdutosRepository {
         produtoId: movimentacao.produtoId,
         tipo: movimentacao.tipo,
         quantidade: movimentacao.quantidade,
-        data: new Date(),
+        produtoExcluido: movimentacao.produtoExcluido,
+        data: setTime(),
+      },
+    });
+  }
+
+  async editaMovimentacao(produto: UpdateProdutoDto, movimentacao) {
+    return await this.prisma.movimentacoes.update({
+      where: {
+        id: movimentacao.id,
+      },
+      data: {
+        produtoExcluido: produto.nome,
       },
     });
   }
