@@ -17,14 +17,15 @@ export class ProdutosController {
     return await this.produtosService.findAllProduto(req.user.sub);
   }
 
-  @Get(':produtoId')
-  async findOneProduto(@Param('produtoId') produtoId: number) {
-    return await this.produtosService.findOneProduto(produtoId);
-  }
-
+  // movimentação tem ficar antes do findOneProduto para evitar conflito!
   @Get('/movimentacao')
   async findAllMovimentacao(@Request() req) {
     return await this.produtosService.findAllMovimentacao(req.user.sub);
+  }
+
+  @Get(':produtoId')
+  async findOneProduto(@Param('produtoId') produtoId: number) {
+    return await this.produtosService.findOneProduto(produtoId);
   }
 
   @Patch()

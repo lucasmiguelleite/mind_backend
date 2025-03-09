@@ -35,6 +35,9 @@ export class ProdutosService {
   }
 
   async findOneProduto(produtoId: number) {
+    if (!produtoId) {
+      throw new HttpException("Produto não informado", HttpStatus.BAD_REQUEST);
+    }
     return this.produtosRepository.findOneProduto(produtoId);
   }
 
