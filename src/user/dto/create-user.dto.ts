@@ -10,9 +10,9 @@ export class CreateUserDto {
 
   @IsOptional()
   @IsString()
-  @Length(8, 20)
+  @Length(4, 30)
   @Matches(/((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, {
-    message: 'Senha muito fraca, senha deve possuir no minímo 1 letra maiúscula, 1 letra minúscula e 1 número. E deve possuir no minímo 8 caracteres.',
+    message: 'Senha muito fraca, senha deve possuir no minímo 1 letra maiúscula, 1 letra minúscula e 1 número. E deve possuir no minímo 4 caracteres.',
   })
   password: string;
 
