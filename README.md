@@ -17,7 +17,7 @@ Após a instalação das dependências, o projeto está pronto para ser iniciali
 
 * Servidor de Testes
 ```bash
-npm run dev
+npm run start:dev
 ```
 ##
 * Servidor de Produção
