@@ -24,7 +24,7 @@ npm run dev
 
 Para isso será necessário compilar os arquivos primeiro:
 ```bash 
-npx tsc ou npm run build
+npm run build
 ```
 E então executar o seguinte comando:
 ```bash 
@@ -49,15 +49,17 @@ npm run start
 + POST /produtos
 	- nome: string*
 	- descricao: string*
-	- imagem: File*
+	- imagem: string*
 	- valor: number*
 	- estoque: number*
+  - userId: number*
+
 	##
 + PATCH /produtos
 	- id: number*
 	- nome: string
 	- descricao: string
-	- imagem: File
+	- imagem: string
 	- valor: number
 	- estoque: number
 	##
