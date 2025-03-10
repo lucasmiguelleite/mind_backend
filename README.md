@@ -39,7 +39,7 @@ npm run start
  | PATCH| /produtos | Editar um produto |
  | GET | /produtos | Lista os produtos|
  |GET | /produtos/:id | Lista um produto individual |
- |DELETE | /api/produtos/:id | Deleta um produto|
+ |DELETE | /produtos/:id | Deleta um produto|
  |GET | /produtos/movimentacao | Lista as movimentações |
  |POST | /auth/login | Faz login|
  |POST | /user | Faz cadastro|
